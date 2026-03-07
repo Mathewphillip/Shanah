@@ -3,473 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shanah | Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background: #0a0a0a;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 20px;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(12px);
-            z-index: 10;
-            border-bottom: 1px solid rgba(0,247,255,0.08);
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #00f7ff;
-            transform: scale(1.1);
-        }
-
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 100px 40px;
-            position: relative;
-            background: rgba(10,10,10,0.5);          /* ← main change: subtle dark overlay */
-            backdrop-filter: blur(1px);               /* optional soft blur */
-        }
-
-        .content-wrapper {
-            max-width: 950px;
-            width: 100%;
-            /* background: rgba(20,20,20,0.4);           slightly darker card-like feel for content */
-            /* border-radius: 16px; */
-            /* padding: 50px 40px; */
-            /* border: 1px solid rgba(0,247,255,0.08); */
-            /* box-shadow: 0 8px 32px rgba(0,0,0,0.5); */
-        }
-
-        h1 {
-            font-size: 80px;
-            letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(0,247,255,0.6);
-        }
-
-        h2 {
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 3px;
-            position: relative;
-            color: #e0ffff;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00f7ff, transparent);
-            transition: width 0.6s;
-        }
-
-        section:hover h2::after {
-            width: 180px;
-        }
-
-        p {
-            max-width: 720px;
-            margin: 0 auto 24px;
-            opacity: 0.9;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        button {
-            margin-top: 30px;
-            padding: 14px 36px;
-            border: none;
-            background: #00f7ff;
-            color: #0a0a0a;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,247,255,0.4);
-        }
-
-        button:hover {
-            transform: translateY(-3px) scale(1.08);
-            box-shadow: 0 10px 30px rgba(0,247,255,0.6);
-        }
-        .head{
-            font-size:8em;
-        }
-        .fade {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1.1s ease;
-        }
-
-        .fade.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Skills */
-        #skills ul {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 18px;
-            list-style: none;
-            margin-top: 30px;
-        }
-
-        #skills li {
-            background: rgba(0,247,255,0.08);
-            padding: 14px 28px;
-            border-radius: 50px;
-            border: 1px solid rgba(0,247,255,0.15);
-            transition: all 0.3s;
-        }
-
-        #skills li:hover {
-            background: #00f7ff;
-            color: #0a0a0a;
-            transform: translateY(-6px);
-        }
-
-        /* Carousel */
-        #projects {
-            padding: 120px 40px;
-        }
-
-        .carousel-container {
-            width: 100%;
-            max-width: 1400px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .carousel-track {
-            display: flex;
-            animation: scroll 60s linear infinite;
-            width: max-content;
-        }
-
-        .carousel-track:hover {
-            animation-play-state: paused;
-        }
-
-        .project-card {
-            flex: 0 0 340px;
-            margin: 0 24px;
-            background: rgba(20,20,20,0.6);
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid rgba(0,247,255,0.1);
-            transition: all 0.4s;
-            backdrop-filter: blur(6px);
-        }
-
-        .project-card:hover {
-            transform: translateY(-16px);
-            box-shadow: 0 20px 50px rgba(0,247,255,0.35);
-            border-color: #00f7ff66;
-        }
-
-        .project-card h3 {
-            color: #00f7ff;
-            margin-bottom: 14px;
-        }
-
-        .project-card p {
-            font-size: 15px;
-            margin-bottom: 18px;
-        }
-
-        .project-card a {
-            color: #a5faff;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        footer {
-            text-align: center;
-            padding: 60px 20px 40px;
-            color: #aaa;
-            font-size: 14px;
-            background: rgba(0,0,0,0.7);
-        }
-
-        #particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -2;
-        }
-        /* ────────────────────────────────────────────────
-   Responsive Adjustments
-───────────────────────────────────────────────── */
-
-@media (max-width: 900px) {
-  nav {
-    gap: 24px;
-    padding: 16px;
-    flex-wrap: wrap;           /* allow wrapping if needed */
-    justify-content: center;
-  }
-
-  nav a {
-    font-size: 13px;
-    letter-spacing: 1.5px;
-  }
-
-  section {
-    padding: 80px 24px;
-    min-height: 80vh;
-  }
-
-  .content-wrapper {
-    max-width: 100%;
-  }
-
-  h1.head {
-    font-size: 5.5rem;        /* was 8em → way too big */
-  }
-
-  h1:not(.head) {
-    font-size: 3.8rem;
-  }
-
-  h2 {
-    font-size: 2.4rem;
-    letter-spacing: 2px;
-  }
-
-  p {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  button {
-    padding: 12px 32px;
-  }
-
-  /* Skills tags */
-  #skills ul {
-    gap: 12px;
-  }
-
-  #skills li {
-    padding: 10px 20px;
-    font-size: 0.92rem;
-  }
-}
-
-@media (max-width: 680px) {
-  h1.head {
-    font-size: 4.2rem;
-  }
-
-  h1:not(.head) {
-    font-size: 3rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  nav {
-    gap: 18px;
-    padding: 14px 10px;
-  }
-
-  nav a {
-    font-size: 12px;
-  }
-
-  section {
-    padding: 60px 16px;
-  }
-
-  /* Make carousel cards smaller & slower scroll on mobile */
-  .project-card {
-    flex: 0 0 300px;           /* slightly smaller */
-    margin: 0 16px;
-    padding: 24px 20px;
-  }
-
-  .carousel-track {
-    animation-duration: 80s;   /* slower scroll feels better on small screens */
-  }
-
-  .carousel-container {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  h1.head {
-    font-size: 3.6rem;
-  }
-
-  .head {
-    line-height: 0.9;        /* prevent crazy line height */
-  }
-
-  p {
-    font-size: 0.96rem;
-  }
-
-  button {
-    width: 100%;
-    max-width: 280px;
-    margin: 30px auto 0;
-    display: block;
-  }
-
-  /* Optional: simple stacked nav on very small screens */
-  nav {
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-  }
-
-  /* Hide some decorative space */
-  #projects {
-    padding: 80px 16px;
-  }
-}
-    </style>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Shanitah Nakitto (Shanah) - Multidisciplinary Designer & Developer based in Kampala, Uganda. Specializing in UI/UX, Web Development, 3D Animation, and Creative Coding.">
+    <meta name="keywords" content="Shanitah Nakitto, Shanah, UI/UX Designer, Web Developer, Frontend Developer, 3D Animation, Creative Coder, Kampala, Uganda, Portfolio">
+    <meta name="author" content="Shanitah Nakitto">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Shanitah Nakitto | Portfolio">
+    <meta property="og:description" content="Multidisciplinary Designer & Developer - Creating elegant digital experiences with minimalism and motion.">
+    <meta property="og:image" content="shan.jpeg">
+    <meta property="og:url" content="https://shanahportfolio.com">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shanitah Nakitto | Portfolio">
+    <meta name="twitter:description" content="Multidisciplinary Designer & Developer - Creating elegant digital experiences with minimalism and motion.">
+    <meta name="twitter:image" content="shan.jpeg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <title>Shanitah Nakitto | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <nav>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <a href="#home">Home</a>
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme">
+            <i class="fas fa-moon"></i>
+        </button>
     </nav>
 
     <section id="home">
-        <div class="content-wrapper">
-            <h1 class="fade head">SHANAH</h1>
-            <p class="fade">Crafting elegant digital experiences with minimalism and motion.</p>
-            <button class="fade">Explore Work</button>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="greeting fade">Hello, I'm</p>
+                <h1 class="fade head">SHANITAH NAKITTO</h1>
+                <p class="tagline fade">Shanah • Creative Developer & Designer</p>
+                <div class="hero-description fade">
+                    <p>I craft <strong>elegant digital experiences</strong> that blend aesthetics with purposeful interactivity.</p>
+                </div>
+                <div class="hero-offer fade">
+                    <h3><i class="fas fa-lightbulb"></i> What I Offer</h3>
+                    <ul>
+                        <li><i class="fas fa-paint-brush"></i> UI/UX Design</li>
+                        <li><i class="fas fa-code"></i> Web Development</li>
+                        <li><i class="fas fa-cube"></i> 3D Animation</li>
+                        <li><i class="fas fa-magic"></i> Creative Coding</li>
+                    </ul>
+                </div>
+                <div class="hero-cta fade">
+                    <p class="why-matter"><i class="fas fa-star"></i> <strong>Why I Matter:</strong> I transform ideas into immersive digital realities that captivate audiences and drive results.</p>
+                    <button class="primary-btn">Explore My Work</button>
+                    <button class="secondary-btn">Get In Touch</button>
+                </div>
+            </div>
+            <div class="hero-visual fade">
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="shan.jpeg" alt="Shanitah Nakitto">
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" aria-label="Behance"><i class="fab fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="about">
         <div class="content-wrapper">
-            <h2 class="fade">About Shanah</h2>
-            <p class="fade">
-                Shanah (Shanitah) is a multidisciplinary designer and developer based in Kampala, Uganda. She specializes in creating clean, immersive web experiences that balance aesthetics with purposeful interactivity.
-            </p>
-            <p class="fade">
-                Her work merges thoughtful UI/UX, creative coding, and 3D animation — always with an emphasis on simplicity, elegance, and emotional impact.
-            </p>
+            <h2 class="fade"><i class="fas fa-user"></i> About Me</h2>
+            <div class="about-cards">
+                <div class="about-card fade">
+                    <i class="fas fa-crosshairs"></i>
+                    <h3>Who I Am</h3>
+                    <p>I'm <strong>Shanitah Nakitto</strong> (Shanah) — a multidisciplinary designer and developer based in <strong>Kampala, Uganda</strong>. With a passion for creating memorable digital experiences, I bridge the gap between design and technology.</p>
+                </div>
+                <div class="about-card fade">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>What I Do</h3>
+                    <p>I specialize in <strong>clean, immersive web experiences</strong> that balance aesthetics with purposeful interactivity. From UI/UX design to creative coding and 3D animation — I bring ideas to life with elegance and precision.</p>
+                </div>
+                <div class="about-card fade">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Why Choose Me</h3>
+                    <p>My work doesn't just look good — it <strong>delivers results</strong>. I combine technical expertise with creative vision to build digital products that engage users, strengthen brands, and drive growth. Every project gets my full passion and commitment.</p>
+                </div>
+            </div>
+            <div class="about-extra fade">
+                <div class="stat-item">
+                    <span class="stat-number">5+</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Projects Completed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label">Happy Clients</span>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="skills">
         <div class="content-wrapper">
-            <h2 class="fade">Skills & Tools</h2>
-            <ul class="fade">
-                <li>HTML5 · CSS3 · Tailwind</li>
-                <li>JavaScript · Three.js</li>
-                <li>UI/UX Design</li>
-                <li>Adobe Suite · Figma</li>
-                <li>3D Animation & Modeling</li>
-                <li>GSAP · Framer Motion</li>
-                <li>Creative Direction</li>
-            </ul>
+            <h2 class="fade"><i class="fas fa-tools"></i> Skills & Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML5 & CSS3</span>
+                        <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fab fa-js"></i>
+                        <span>JavaScript & ES6+</span>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fab fa-react"></i>
+                        <span>React & Frameworks</span>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>UI/UX Design</span>
+                        <span class="skill-percent">92%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 92%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fab fa-figma"></i>
+                        <span>Figma & Adobe Suite</span>
+                        <span class="skill-percent">88%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 88%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fas fa-cube"></i>
+                        <span>Three.js & 3D Animation</span>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Responsive Design</span>
+                        <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-item fade">
+                    <div class="skill-header">
+                        <i class="fas fa-terminal"></i>
+                        <span>Git & Version Control</span>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="--progress: 85%"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="projects">
         <div class="content-wrapper" style="max-width:1400px; background:none; border:none; box-shadow:none; padding:0;">
-            <h2 class="fade" style="margin-bottom:60px;">Featured Projects</h2>
+            <h2 class="fade" style="margin-bottom:60px;"><i class="fas fa-folder-open"></i> Featured Projects</h2>
+            <p class="fade" style="margin-bottom: 50px;">Real projects coming soon! These are placeholders ready for your actual work.</p>
             <div class="carousel-container fade">
                 <div class="carousel-track">
-                    <!-- Project cards repeated twice for seamless loop -->
+                    <!-- Real Projects - Placeholder for your actual work -->
                     <div class="project-card">
-                        <h3>3D Interactive Gallery</h3>
-                        <p>Explorable 3D art space built with Three.js — smooth controls, lighting, and environment mapping.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>E-Commerce Platform</h3>
+                        <p>A full-featured online store with seamless checkout, inventory management, and stunning product displays.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Minimal Luxury Store</h3>
-                        <p>High-end e-commerce with fluid animations, product viewers, and elegant micro-interactions.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Business Dashboard</h3>
+                        <p>Interactive analytics dashboard with real-time data visualization and custom reporting features.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>D3.js</span>
+                            <span>Firebase</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Personal Blog Engine</h3>
-                        <p>Custom CMS with rich typography, dark mode, reading progress, and scroll-based animations.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Educational Platform</h3>
+                        <p>Online learning management system with video streaming, progress tracking, and interactive quizzes.</p>
+                        <div class="project-tags">
+                            <span>Next.js</span>
+                            <span>TypeScript</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Shader Experiments</h3>
-                        <p>Collection of GLSL shaders and Three.js visuals — noise, distortion, glitch, and particle systems.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-vr-cardboard"></i>
+                        </div>
+                        <h3>3D Interactive Experience</h3>
+                        <p>Immersive WebGL experience with custom shaders, particle systems, and smooth camera controls.</p>
+                        <div class="project-tags">
+                            <span>Three.js</span>
+                            <span>GLSL</span>
+                            <span>WebGL</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
 
-                    <!-- Duplicate set -->
+                    <!-- Duplicate set for seamless loop -->
                     <div class="project-card">
-                        <h3>3D Interactive Gallery</h3>
-                        <p>Explorable 3D art space built with Three.js — smooth controls, lighting, and environment mapping.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>E-Commerce Platform</h3>
+                        <p>A full-featured online store with seamless checkout, inventory management, and stunning product displays.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Minimal Luxury Store</h3>
-                        <p>High-end e-commerce with fluid animations, product viewers, and elegant micro-interactions.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Business Dashboard</h3>
+                        <p>Interactive analytics dashboard with real-time data visualization and custom reporting features.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>D3.js</span>
+                            <span>Firebase</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Personal Blog Engine</h3>
-                        <p>Custom CMS with rich typography, dark mode, reading progress, and scroll-based animations.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Educational Platform</h3>
+                        <p>Online learning management system with video streaming, progress tracking, and interactive quizzes.</p>
+                        <div class="project-tags">
+                            <span>Next.js</span>
+                            <span>TypeScript</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="project-card">
-                        <h3>Shader Experiments</h3>
-                        <p>Collection of GLSL shaders and Three.js visuals — noise, distortion, glitch, and particle systems.</p>
-                        <a href="#">View Project →</a>
+                        <div class="project-icon">
+                            <i class="fas fa-vr-cardboard"></i>
+                        </div>
+                        <h3>3D Interactive Experience</h3>
+                        <p>Immersive WebGL experience with custom shaders, particle systems, and smooth camera controls.</p>
+                        <div class="project-tags">
+                            <span>Three.js</span>
+                            <span>GLSL</span>
+                            <span>WebGL</span>
+                        </div>
+                        <a href="#">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -478,103 +336,61 @@
 
     <section id="contact">
         <div class="content-wrapper">
-            <h2 class="fade">Let's Create Together</h2>
+            <h2 class="fade"><i class="fas fa-paper-plane"></i> Let's Create Together</h2>
             <p class="fade">Open to collaborations, freelance projects, or just good conversations about design & code.</p>
-            <p class="fade">shanah@example.com  •  +256 700 123 456</p>
-            <button class="fade">Get in Touch</button>
+            <div class="contact-info fade">
+                <a href="mailto:shanahs975@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>shanahs975@gmail.com</span>
+                </a>
+                <a href="tel:+256700123456" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+256 701 164485</span>
+                </a>
+                <a href="#" class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Kampala, Uganda</span>
+                </a>
+            </div>
+            <!-- Contact Form -->
+            <form class="contact-form fade" id="contactForm" action="https://formspree.io/f/mvzwgojk" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" name="name" id="name" placeholder="Enter your name" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea name="message" id="message" placeholder="Enter your message" rows="5" required></textarea>
+                    <i class="fas fa-comment"></i>
+                </div>
+                <button type="submit" class="primary-btn">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
         </div>
     </section>
 
     <footer>
-        © 2026 Shanah — Made with passion in Kampala
+        <div class="footer-content">
+            <div class="footer-logo">Shanah</div>
+            <p>&copy; 2026 Shanitah Nakitto. Made with <i class="fas fa-heart"></i> in Kampala</p>
+            <div class="footer-social">
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                <a href="#" aria-label="Behance"><i class="fab fa-behance"></i></a>
+            </div>
+        </div>
     </footer>
 
     <canvas id="particles"></canvas>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // Torus Knot Background
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        const geometry = new THREE.TorusKnotGeometry(1.1, 0.35, 120, 20);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00f7ff, wireframe: true });
-        const torus = new THREE.Mesh(geometry, material);
-        scene.add(torus);
-
-        camera.position.z = 4.2;
-
-        function animateTorus() {
-            requestAnimationFrame(animateTorus);
-            torus.rotation.x += 0.004;
-            torus.rotation.y += 0.008;
-            renderer.render(scene, camera);
-        }
-        animateTorus();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // Floating particles
-        const particleCanvas = document.getElementById('particles');
-        const ctx = particleCanvas.getContext('2d');
-        particleCanvas.width = window.innerWidth;
-        particleCanvas.height = window.innerHeight;
-
-        const particles = [];
-        for (let i = 0; i < 180; i++) {
-            particles.push({
-                x: Math.random() * particleCanvas.width,
-                y: Math.random() * particleCanvas.height,
-                radius: Math.random() * 1.8 + 0.8,
-                speed: Math.random() * 0.4 + 0.15
-            });
-        }
-
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-            particles.forEach(p => {
-                p.y += p.speed;
-                if (p.y > particleCanvas.height) p.y = -10;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0,247,255,0.45)';
-                ctx.fill();
-            });
-        }
-        animateParticles();
-
-        window.addEventListener('resize', () => {
-            particleCanvas.width = window.innerWidth;
-            particleCanvas.height = window.innerHeight;
-        });
-
-        // Fade-in observer with stagger
-        const fades = document.querySelectorAll('.fade');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('show'), i * 180);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        fades.forEach(el => observer.observe(el));
-
-        // Smooth scroll
-        document.querySelectorAll('nav a').forEach(a => {
-            a.addEventListener('click', e => {
-                e.preventDefault();
-                document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>
