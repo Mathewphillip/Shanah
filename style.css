@@ -6,7 +6,8 @@
     --bg-primary: #000000;
     --bg-secondary: #000000;
     --bg-card: rgba(0, 0, 0, 0.6);
-    --bg-overlay: rgba(0, 0, 0, 0.95);
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    --canvas-bg: #000000;
     
     --text-primary: #ffffff;
     --text-secondary: #e0e0e0;
@@ -45,6 +46,7 @@
     --bg-secondary: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.8);
     --bg-overlay: rgba(248, 249, 250, 0.7);
+    --canvas-bg: #f8f9fa;
     
     --text-primary: #1a1a2e;
     --text-secondary: #4a4a4a;
@@ -89,6 +91,8 @@ canvas {
     top: 0;
     left: 0;
     z-index: -1;
+    background: var(--canvas-bg);
+    transition: background var(--transition-medium);
 }
 
 /* ========================================
@@ -220,7 +224,7 @@ section {
     padding: 100px 40px;
     position: relative;
     background: var(--bg-overlay);
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(.5px);
 }
 
 .content-wrapper {
@@ -424,11 +428,12 @@ strong {
     box-shadow: var(--shadow-medium);
     backdrop-filter: blur(10px);
     text-align: center;
+    transform: rotateZ(-15deg);
     transition: var(--transition-medium);
 }
 
 .profile-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-30px);
     box-shadow: var(--shadow-strong);
 }
 

@@ -116,6 +116,17 @@
             }
         }
 
+        // Update canvas background based on theme
+        function updateCanvasBackground(theme) {
+            const canvas = document.querySelector('canvas');
+            if (canvas) {
+                canvas.style.background = theme === 'light' ? '#f8f9fa' : '#000000';
+            }
+        }
+
+        // Apply initial canvas background
+        updateCanvasBackground(savedTheme);
+
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -123,4 +134,5 @@
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
+            updateCanvasBackground(newTheme);
         });
